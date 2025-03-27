@@ -2,7 +2,6 @@ using Voltix.Shared.Extensions;
 using MassTransit;
 using Voltix.NotificationMicroservice.Services;
 using Voltix.NotificationMicroservice.Consumers;
-using Voltix.Shared.Utilities;
 using Voltix.NotificationMicroservice.Interfaces.Options;
 using Voltix.NotificationMicroservice.Contexts;
 using Voltix.NotificationMicroservice.GrpcServices;
@@ -13,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 builder.AddNpgsqlDbContext<ApplicationContext>("voltix-notification-microservice-database");
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc().AddJsonTranscoding();
+builder.Services.AddGrpcSwagger();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
