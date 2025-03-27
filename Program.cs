@@ -29,11 +29,7 @@ builder.Services.AddMassTransit(options => {
     options.AddConsumer<TelegramNotificationConsumer>();
 
     options.UsingRabbitMq((context, configurator) => {
-        var url = Url.Parse(builder.Configuration.GetConnectionString("voltix-notification-microservice-queue")!);
-        configurator.Host(url.Host, url.Port, url.Path, settings => {
-            settings.Username(url.Username);
-            settings.Password(url.Password);
-        });
+        configurator.Host(new Uri(builder.Configuration.GetConnectionString("voltix-notification-microservice-queue")!));
 
         configurator.ReceiveEndpoint("mail-notification-consumer", endpoint => {
             endpoint.ConfigureConsumer<MailNotificationConsumer>(context);
