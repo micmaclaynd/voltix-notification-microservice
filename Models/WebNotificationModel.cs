@@ -21,6 +21,6 @@ public class WebNotificationModel : BaseModel {
     public required int UserId { get; set; }
 
     [Required]
-    [Column("added_datetime", TypeName = "datetime")]
+    [Column("added_datetime", TypeName = "timestamp with time zone")]
     public required DateTime AddedDateTime { get; set; }
 }
