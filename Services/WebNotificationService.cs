@@ -6,8 +6,13 @@ namespace Voltix.NotificationMicroservice.Services;
 
 public interface IWebNotificationService {
     public Task<IEnumerable<WebNotificationModel>> GetWebNotificationsAsync(int userId, bool? isReaded = null);
+    public Task<WebNotificationModel?> GetWebNotificationAsync(int id);
 
     public Task AddWebNotificationAsync(WebNotificationModel webNotificationModel);
+
+    public Task UpdateWebNotificationAsync(WebNotificationModel webNotification);
+
+    public Task RemoveWebNotificationAsync(WebNotificationModel webNotificationModel);
 }
 
 public class WebNotificationService(ApplicationContext context) : IWebNotificationService {
@@ -23,8 +28,22 @@ public class WebNotificationService(ApplicationContext context) : IWebNotificati
         return await query.ToListAsync();
     }
 
+    public async Task<WebNotificationModel?> GetWebNotificationAsync(int id) {
+        return await _context.WebNotifications.FirstOrDefaultAsync(webNotificationModel => webNotificationModel.Id == id);
+    }
+
+    public async Task UpdateWebNotificationAsync(WebNotificationModel webNotification) {
+        _context.WebNotifications.Update(webNotification);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task AddWebNotificationAsync(WebNotificationModel webNotificationModel) {
         await _context.WebNotifications.AddAsync(webNotificationModel);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveWebNotificationAsync(WebNotificationModel webNotificationModel) {
+        _context.WebNotifications.Remove(webNotificationModel);
         await _context.SaveChangesAsync();
     }
 }
